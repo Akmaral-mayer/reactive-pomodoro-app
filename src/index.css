@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background: rgb(247, 99, 31);
+  background: linear-gradient(180deg, rgba(247, 99, 31, 0.8802871490393032) 0%, rgba(255, 0, 31, 1) 100%);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-family: 'Titillium Web';
+}
