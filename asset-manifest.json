@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/reactive-pomodoro-app/static/css/main.69a265e1.chunk.css",
-    "main.js": "/reactive-pomodoro-app/static/js/main.a47a8c70.chunk.js",
-    "main.js.map": "/reactive-pomodoro-app/static/js/main.a47a8c70.chunk.js.map",
+    "main.js": "/reactive-pomodoro-app/static/js/main.4981b912.chunk.js",
+    "main.js.map": "/reactive-pomodoro-app/static/js/main.4981b912.chunk.js.map",
     "runtime-main.js": "/reactive-pomodoro-app/static/js/runtime-main.b08707d7.js",
     "runtime-main.js.map": "/reactive-pomodoro-app/static/js/runtime-main.b08707d7.js.map",
     "static/js/2.25a93a81.chunk.js": "/reactive-pomodoro-app/static/js/2.25a93a81.chunk.js",
     "static/js/2.25a93a81.chunk.js.map": "/reactive-pomodoro-app/static/js/2.25a93a81.chunk.js.map",
     "index.html": "/reactive-pomodoro-app/index.html",
-    "precache-manifest.d24027f1f48e045c74d517132888296c.js": "/reactive-pomodoro-app/precache-manifest.d24027f1f48e045c74d517132888296c.js",
+    "precache-manifest.756a8ad3254755fd401b0f3ea703f035.js": "/reactive-pomodoro-app/precache-manifest.756a8ad3254755fd401b0f3ea703f035.js",
     "service-worker.js": "/reactive-pomodoro-app/service-worker.js",
     "static/css/main.69a265e1.chunk.css.map": "/reactive-pomodoro-app/static/css/main.69a265e1.chunk.css.map",
     "static/media/settings.svg": "/reactive-pomodoro-app/static/media/settings.691d4f01.svg"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.b08707d7.js",
     "static/js/2.25a93a81.chunk.js",
     "static/css/main.69a265e1.chunk.css",
-    "static/js/main.a47a8c70.chunk.js"
+    "static/js/main.4981b912.chunk.js"
   ]
 }
