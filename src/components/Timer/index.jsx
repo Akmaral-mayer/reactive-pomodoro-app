@@ -3,7 +3,10 @@ import TimerDisplay from '../TimerDisplay';
 import SettingsBtn from '../SettingsBtn';
 import Settings from '../SettingsModal';
 import css from './Timer.module.css';
-// import info from '../../images/info.svg'
+import bellSound from '../../audio/bell.flac';
+import Swal from 'sweetalert2';
+import InfoBtn from '../InfoBtn';
+import Info from '../InfoModal';
 
 function Timer() {
   // Here are time value hooks
@@ -13,7 +16,7 @@ function Timer() {
   const [pomodoros, setPomodoros] = useState(4);
 
   // Hooks for sounds
-  const [bell] = useState(new Audio('bell.flac'));
+  const [bell] = useState(new Audio(bellSound));
 
   // Other hooks
   const [time, setTime] = useState(pomodoroInterval * 60);
@@ -21,9 +24,12 @@ function Timer() {
   const [restFlag, setRestFlag] = useState(false);
   const [buttonText, setButtonText] = useState("Pause");
   const [startStatus, setStartStatus] = useState(false);
-  const [settings, setSettings] = useState(false);
 
-  // Here is a temporary value hook for progress bar
+  // Hooks for Modals
+  const [settings, setSettings] = useState(false);
+  const [info, setInfo] = useState(false);
+
+  // Here is a temporary value for progress bar
   const [temporary, setTemporary] = useState(pomodoroInterval)
 
   useEffect(() => {
@@ -56,20 +62,43 @@ function Timer() {
     if (pomodoro < pomodoros && !restFlag) {
       interval = shortBrake
       flag = true
+      // setTimeout(function () {
+      Swal.fire({
+        title: "Time to have a rest",
+        allowOutsideClick: false,
+        onOpen: () => { setButtonText("Continue") },
+        onClose: () => { setButtonText("Pause") },
+        allowEnterKey: true,
+        confirmButtonColor: "red"
+      })
+      // }, 1000)
       setTemporary(shortBrake)
-      setTimeout(function(){alert("Time to rest")},1000);
     } else if (pomodoro < pomodoros && restFlag) {
       pomodoroCount = pomodoro + 1
       interval = pomodoroInterval
       flag = false
+      Swal.fire({
+        title: "Time to work",
+        allowOutsideClick: false,
+        onOpen: () => { setButtonText("Continue") },
+        onClose: () => { setButtonText("Pause") },
+        allowEnterKey: true,
+        confirmButtonColor: "red"
+      })
       setTemporary(pomodoroInterval)
-      setTimeout(function(){alert("Time to work")},1000);
     } else if (pomodoro >= pomodoros) {
       pomodoroCount = 1
       interval = longBreak
       flag = true
+      Swal.fire({
+        title: "Time to have the longest break",
+        allowOutsideClick: false,
+        onOpen: () => { setButtonText("Continue") },
+        onClose: () => { setButtonText("Pause") },
+        allowEnterKey: true,
+        confirmButtonColor: "red"
+      })
       setTemporary(longBreak)
-      setTimeout(function(){alert("Time to have the longest break")},1000);
     }
     setPomodoro(pomodoroCount)
     setTime(interval * 60)
@@ -97,20 +126,23 @@ function Timer() {
     return setSettings(true);
   }
 
+  const onInfo = () => {
+    return setInfo(true);
+  }
+
   const reset = () => {
     if (buttonText === "Continue") {
       setStartStatus(false)
       setRestFlag(false)
-      setTime(temporary * 60)
+      setTime((temporary) * 60)
       setButtonText('Pause')
     }
   }
 
   return (
     <div>
-      {/* <button><img src={info} alt=""/></button> */}
+      <InfoBtn onclick={onInfo} />
       <SettingsBtn onclick={onModal} />
-      
 
       <TimerDisplay time={pomodoroInterval} progress={getProgress()}>
         <h2 className={css.test}>{minutes < 10 ? `0${minutes}` : minutes} :  {seconds < 10 ? `0${seconds}` : seconds}</h2>
@@ -150,6 +182,20 @@ function Timer() {
         <button className={css.closeSettings}
           onClick={() => setSettings(false)}>All ok</button>
       </Settings>
+
+      <Info active={info} onChange={onInfo}>
+        <h2>About Pomodoro Technique</h2>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+         Nihil labore sit quas nam repellat perspiciatis autem, distinctio
+         suscipit ex, quae in fuga? 
+        <h2>Use Experience</h2>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Reiciendis aliquid cupiditate fugiat velit? Quam explicabo consequuntur,
+        odio non qui recusandae vitae dolore nam odit eius maxime maiores voluptate quaerat provident?
+        <br/>
+        <button className={css.closeSettings}
+          onClick={() => setInfo(false)}>Close</button>
+      </Info>
     </div>
   );
 }
