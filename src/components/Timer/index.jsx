@@ -24,7 +24,6 @@ function Timer() {
 
   // Here is a temporary value for progress bar
   const [temporary, setTemporary] = useState(pomodoroInterval)
-  // const [lol, setLol] = useState()
 
   useEffect(() => {
     if (startStatus) {
@@ -39,7 +38,7 @@ function Timer() {
         }
       }
     }
-  },);
+  });
 
   const start = () => {
     console.log('test');
@@ -95,11 +94,12 @@ function Timer() {
   }
 
   const reset = () => {
-    setStartStatus(false)
-    setRestFlag(false)
-    // setPomodoroInterval(lol)
-    setTime(pomodoroInterval * 60)
-    setButtonText('Pause')
+    if (buttonText === "Continue") {
+      setStartStatus(false)
+      setRestFlag(false)
+      setTime(temporary * 60)
+      setButtonText('Pause')
+    }
   }
 
   return (
@@ -127,14 +127,13 @@ function Timer() {
             setPomodoroInterval(e.target.value)
             setTime(e.target.value * 60)
             setTemporary(e.target.value)
-            // setLol(e.target.value)
           }} />
 
-        <div>Little Break</div>
+        <div>Short Break</div>
         <input value={shortBrake}
           onChange={(e) => setShortBrake(e.target.value)} />
 
-        <div>Large Break</div>
+        <div>Long Break</div>
         <input value={longBreak}
           onChange={(e) => setLongBreak(e.target.value)} />
 
