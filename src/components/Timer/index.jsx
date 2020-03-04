@@ -3,6 +3,7 @@ import TimerDisplay from '../TimerDisplay';
 import SettingsBtn from '../SettingsBtn';
 import Settings from '../SettingsModal';
 import css from './Timer.module.css';
+// import info from '../../images/info.svg'
 
 function Timer() {
   // Here are time value hooks
@@ -22,7 +23,7 @@ function Timer() {
   const [startStatus, setStartStatus] = useState(false);
   const [settings, setSettings] = useState(false);
 
-  // Here is a temporary value for progress bar
+  // Here is a temporary value hook for progress bar
   const [temporary, setTemporary] = useState(pomodoroInterval)
 
   useEffect(() => {
@@ -56,16 +57,19 @@ function Timer() {
       interval = shortBrake
       flag = true
       setTemporary(shortBrake)
+      setTimeout(function(){alert("Time to rest")},1000);
     } else if (pomodoro < pomodoros && restFlag) {
       pomodoroCount = pomodoro + 1
       interval = pomodoroInterval
       flag = false
       setTemporary(pomodoroInterval)
+      setTimeout(function(){alert("Time to work")},1000);
     } else if (pomodoro >= pomodoros) {
       pomodoroCount = 1
       interval = longBreak
       flag = true
       setTemporary(longBreak)
+      setTimeout(function(){alert("Time to have the longest break")},1000);
     }
     setPomodoro(pomodoroCount)
     setTime(interval * 60)
@@ -104,7 +108,9 @@ function Timer() {
 
   return (
     <div>
+      {/* <button><img src={info} alt=""/></button> */}
       <SettingsBtn onclick={onModal} />
+      
 
       <TimerDisplay time={pomodoroInterval} progress={getProgress()}>
         <h2 className={css.test}>{minutes < 10 ? `0${minutes}` : minutes} :  {seconds < 10 ? `0${seconds}` : seconds}</h2>
@@ -114,7 +120,7 @@ function Timer() {
         startStatus
           ? <div>
             <button className={css.btn} onClick={pauseAndResume} >{buttonText}</button>
-            <button className={css.reset} onClick={reset}>Reset</button>
+            <button className={css.reset} title="Click <Pause> to reset" onClick={reset}>Reset</button>
           </div>
           : <button className={css.btn} onClick={start}>Start</button>
       }
