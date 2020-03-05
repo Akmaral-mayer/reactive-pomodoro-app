@@ -9,11 +9,12 @@ import InfoBtn from '../InfoBtn';
 import Info from '../InfoModal';
 
 function Timer() {
-  // Here are time value hooks
+  // Here are time value hooks 
   const [pomodoroInterval, setPomodoroInterval] = useState(25);
   const [shortBrake, setShortBrake] = useState(5);
   const [longBreak, setLongBreak] = useState(10);
   const [pomodoros, setPomodoros] = useState(4);
+  const [autoPlay, setAutoPlay] = useState(true);
 
   // Hooks for sounds
   const [bell] = useState(new Audio(bellSound));
@@ -62,43 +63,58 @@ function Timer() {
     if (pomodoro < pomodoros && !restFlag) {
       interval = shortBrake
       flag = true
-      // setTimeout(function () {
-      Swal.fire({
-        title: "Time to have a rest",
-        allowOutsideClick: false,
-        onOpen: () => { setButtonText("Continue") },
-        onClose: () => { setButtonText("Pause") },
-        allowEnterKey: true,
-        confirmButtonColor: "red"
-      })
-      // }, 1000)
       setTemporary(shortBrake)
+
+      {
+        autoPlay === true &&
+          Swal.fire({
+            title: "Time to have a rest",
+            allowOutsideClick: false,
+            onOpen: () => { setButtonText("Continue") },
+            onClose: () => { setButtonText("Pause") },
+            allowEnterKey: true,
+            confirmButtonColor: "red"
+          })
+      }
+
     } else if (pomodoro < pomodoros && restFlag) {
       pomodoroCount = pomodoro + 1
       interval = pomodoroInterval
       flag = false
-      Swal.fire({
-        title: "Time to work",
-        allowOutsideClick: false,
-        onOpen: () => { setButtonText("Continue") },
-        onClose: () => { setButtonText("Pause") },
-        allowEnterKey: true,
-        confirmButtonColor: "red"
-      })
       setTemporary(pomodoroInterval)
+
+      {
+        autoPlay === true &&
+          Swal.fire({
+            title: "Time to work",
+            allowOutsideClick: false,
+            onOpen: () => { setButtonText("Continue") },
+            onClose: () => { setButtonText("Pause") },
+            allowEnterKey: true,
+            confirmButtonColor: "red"
+          })
+      }
+
+
     } else if (pomodoro >= pomodoros) {
       pomodoroCount = 1
       interval = longBreak
       flag = true
-      Swal.fire({
-        title: "Time to have the longest break",
-        allowOutsideClick: false,
-        onOpen: () => { setButtonText("Continue") },
-        onClose: () => { setButtonText("Pause") },
-        allowEnterKey: true,
-        confirmButtonColor: "red"
-      })
       setTemporary(longBreak)
+
+
+      {
+        autoPlay === true &&
+          Swal.fire({
+            title: "Time to have the longest break",
+            allowOutsideClick: false,
+            onOpen: () => { setButtonText("Continue") },
+            onClose: () => { setButtonText("Pause") },
+            allowEnterKey: true,
+            confirmButtonColor: "red"
+          })
+      }
+
     }
     setPomodoro(pomodoroCount)
     setTime(interval * 60)
@@ -128,6 +144,10 @@ function Timer() {
 
   const onInfo = () => {
     return setInfo(true);
+  }
+
+  const onCheckBox = () => {
+    return setAutoPlay(!autoPlay)
   }
 
   const reset = () => {
@@ -177,7 +197,10 @@ function Timer() {
 
         <div>Pomodoro Count</div>
         <input value={pomodoros}
-          onChange={(e) => setPomodoros(e.target.value)} /><br />
+          onChange={(e) => setPomodoros(e.target.value)} />
+
+        <div>Auto Play without push notifications</div>
+        <input type="checkbox" name="" onChange={onCheckBox} checked={autoPlay} id="" /><br />
 
         <button className={css.closeSettings}
           onClick={() => setSettings(false)}>All ok</button>
@@ -187,12 +210,12 @@ function Timer() {
         <h2>About Pomodoro Technique</h2>
         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
          Nihil labore sit quas nam repellat perspiciatis autem, distinctio
-         suscipit ex, quae in fuga? 
+         suscipit ex, quae in fuga?
         <h2>Use Experience</h2>
         Lorem ipsum dolor sit amet consectetur adipisicing elit.
         Reiciendis aliquid cupiditate fugiat velit? Quam explicabo consequuntur,
         odio non qui recusandae vitae dolore nam odit eius maxime maiores voluptate quaerat provident?
-        <br/>
+        <br />
         <button className={css.closeSettings}
           onClick={() => setInfo(false)}>Close</button>
       </Info>
