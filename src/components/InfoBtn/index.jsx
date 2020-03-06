@@ -1,11 +1,11 @@
 import React from 'react';
 import css from './InfoBtn.module.css';
-import Info from '../../images/info.svg';
+import InfoIcon from '@material-ui/icons/Info';
 
 const InfoBtn = (props) => {
     return (
         <button onClick={props.onclick} className={css.btn}>
-            <img alt="setting" src={Info} />
+            <InfoIcon fontSize="large"/>
         </button>
     )
 }

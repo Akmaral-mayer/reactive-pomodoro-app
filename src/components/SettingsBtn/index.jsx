@@ -1,11 +1,11 @@
 import React from 'react';
 import css from './SettingsBtn.module.css';
-import Settings from '../../images/settings.svg';
+import SettingsIcon from '@material-ui/icons/Settings';
 
 const SettingsBtn = (props) => {
     return (
         <button onClick={props.onclick} className={css.btn}>
-            <img alt="setting" src={Settings} />
+            <SettingsIcon fontSize="large"/>
         </button>
     )
 }

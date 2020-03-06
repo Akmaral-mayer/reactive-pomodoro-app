@@ -7,6 +7,8 @@ import bellSound from '../../audio/bell.flac';
 import Swal from 'sweetalert2';
 import InfoBtn from '../InfoBtn';
 import Info from '../InfoModal';
+import { Button, FormControlLabel, Checkbox } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 
 function Timer() {
   // Here are time value hooks 
@@ -65,17 +67,18 @@ function Timer() {
       flag = true
       setTemporary(shortBrake)
 
-      {
-        autoPlay === true &&
-          Swal.fire({
-            title: "Time to have a rest",
-            allowOutsideClick: false,
-            onOpen: () => { setButtonText("Continue") },
-            onClose: () => { setButtonText("Pause") },
-            allowEnterKey: true,
-            confirmButtonColor: "red"
-          })
-      }
+      autoPlay === true &&
+        Swal.fire({
+          title: "Time to have a rest",
+          allowOutsideClick: false,
+          onOpen: () => { setButtonText("Continue") },
+          onClose: () => {
+            setButtonText("Pause")
+            blueBg()
+          },
+          allowEnterKey: true,
+          confirmButtonColor: "red"
+        })
 
     } else if (pomodoro < pomodoros && restFlag) {
       pomodoroCount = pomodoro + 1
@@ -83,17 +86,18 @@ function Timer() {
       flag = false
       setTemporary(pomodoroInterval)
 
-      {
-        autoPlay === true &&
-          Swal.fire({
-            title: "Time to work",
-            allowOutsideClick: false,
-            onOpen: () => { setButtonText("Continue") },
-            onClose: () => { setButtonText("Pause") },
-            allowEnterKey: true,
-            confirmButtonColor: "red"
-          })
-      }
+      autoPlay === true &&
+        Swal.fire({
+          title: "Time to work",
+          allowOutsideClick: false,
+          onOpen: () => { setButtonText("Continue") },
+          onClose: () => {
+            setButtonText("Pause")
+            redBg()
+          },
+          allowEnterKey: true,
+          confirmButtonColor: "blue"
+        })
 
 
     } else if (pomodoro >= pomodoros) {
@@ -101,20 +105,17 @@ function Timer() {
       interval = longBreak
       flag = true
       setTemporary(longBreak)
+      blueBg()
 
-
-      {
-        autoPlay === true &&
-          Swal.fire({
-            title: "Time to have the longest break",
-            allowOutsideClick: false,
-            onOpen: () => { setButtonText("Continue") },
-            onClose: () => { setButtonText("Pause") },
-            allowEnterKey: true,
-            confirmButtonColor: "red"
-          })
-      }
-
+      autoPlay === true &&
+        Swal.fire({
+          title: "Time to have the longest break",
+          allowOutsideClick: false,
+          onOpen: () => { setButtonText("Continue") },
+          onClose: () => { setButtonText("Pause") },
+          allowEnterKey: true,
+          confirmButtonColor: "red"
+        })
     }
     setPomodoro(pomodoroCount)
     setTime(interval * 60)
@@ -159,6 +160,17 @@ function Timer() {
     }
   }
 
+  // Func for changing bg Color while a break
+  const blueBg = () => {
+    document.body.classList.remove('restout')
+    document.body.classList.add('workout')
+  }
+
+  const redBg = () => {
+    document.body.classList.remove('workout')
+    document.body.classList.add('restout')
+  }
+
   return (
     <div>
       <InfoBtn onclick={onInfo} />
@@ -167,20 +179,25 @@ function Timer() {
       <TimerDisplay time={pomodoroInterval} progress={getProgress()}>
         <h2 className={css.test}>{minutes < 10 ? `0${minutes}` : minutes} :  {seconds < 10 ? `0${seconds}` : seconds}</h2>
       </TimerDisplay>
+      <br />
 
       {
         startStatus
           ? <div>
-            <button className={css.btn} onClick={pauseAndResume} >{buttonText}</button>
-            <button className={css.reset} title="Click <Pause> to reset" onClick={reset}>Reset</button>
+            <Button size="large" variant="outlined" onClick={pauseAndResume}>{buttonText}</Button>
+            <Button size="large" title="Click <Pause> to reset" onClick={reset}>Reset</Button>
           </div>
-          : <button className={css.btn} onClick={start}>Start</button>
+          : <Button variant="outlined" onClick={start} size="large">Start</Button>
       }
 
       <Settings active={settings} onChange={onModal}>
         <h3>Settings</h3>
         <div>Pomodoro</div>
-        <input value={pomodoroInterval}
+        <TextField id="standard-basic"
+          variant="outlined"
+          type="number"
+          fullWidth
+          value={pomodoroInterval}
           onChange={(e) => {
             setPomodoroInterval(e.target.value)
             setTime(e.target.value * 60)
@@ -188,22 +205,44 @@ function Timer() {
           }} />
 
         <div>Short Break</div>
-        <input value={shortBrake}
-          onChange={(e) => setShortBrake(e.target.value)} />
+        <TextField id="standard-basic"
+          variant="outlined"
+          fullWidth
+          value={shortBrake}
+          onChange={(e) => setShortBrake(e.target.value)}
+          type="number"
+        />
 
         <div>Long Break</div>
-        <input value={longBreak}
-          onChange={(e) => setLongBreak(e.target.value)} />
+        <TextField id="standard-basic"
+          variant="outlined"
+          fullWidth
+          value={longBreak}
+          onChange={(e) => setLongBreak(e.target.value)}
+          type="number"
+        />
 
         <div>Pomodoro Count</div>
-        <input value={pomodoros}
-          onChange={(e) => setPomodoros(e.target.value)} />
+        <TextField id="standard-basic"
+          variant="outlined"
+          fullWidth
+          value={pomodoros}
+          onChange={(e) => {
+            setPomodoros(e.target.value)
+            console.log('count');
+          }}
+          type="number"
+        />
 
-        <div>Auto Play without push notifications</div>
-        <input type="checkbox" name="" onChange={onCheckBox} checked={autoPlay} id="" /><br />
+        <FormControlLabel
+          control={<Checkbox checked={autoPlay} onChange={onCheckBox} value="checkedA" />}
+          label="Auto Play without push notifications"
+        />
+        <br />
 
-        <button className={css.closeSettings}
-          onClick={() => setSettings(false)}>All ok</button>
+        <Button variant="outlined" size="large" color="primary" onClick={() => setSettings(false)}>
+          All ok
+        </Button>
       </Settings>
 
       <Info active={info} onChange={onInfo}>
@@ -216,10 +255,16 @@ function Timer() {
         Reiciendis aliquid cupiditate fugiat velit? Quam explicabo consequuntur,
         odio non qui recusandae vitae dolore nam odit eius maxime maiores voluptate quaerat provident?
         <br />
-        <button className={css.closeSettings}
-          onClick={() => setInfo(false)}>Close</button>
+        <br />
+        <Button variant="outlined" size="large"
+          onClick={() => {
+            setInfo(false)
+            setPomodoro(1)
+          }
+          }
+        >Close</Button>
       </Info>
-    </div>
+    </div >
   );
 }
 
